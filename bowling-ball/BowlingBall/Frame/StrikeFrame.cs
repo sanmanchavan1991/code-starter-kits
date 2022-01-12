@@ -12,26 +12,31 @@ namespace BowlingBall.Frame
         public bool isDoubleStrike { get; set; }
         public bool isTripleStrike { get; set; }
        
-        private IStrikeFrame ConvertToStrike(IFrame currentFrame)
-        {
-            return (StrikeFrame)currentFrame;
-        }
-        private int GetBonus(IStrikeFrame strikeFrame, List<IFrame> lstFrame,int start,int limit)
+        
+        private int GetBonus(IFrame frame, List<IFrame> lstFrame,int start,int limit)
         {
             int bonus = 0;
-            IFrame nextFrameStrike = lstFrame.Where(i => i.frameNo == (strikeFrame.frameNo + 1) && i.frameType == Enum.FrameType.StrikeFrame).FirstOrDefault();
+            IFrame nextFrameStrike = lstFrame.Where(i => (i.frameNo == (frame.frameNo + 1) && i.frameType == Enum.FrameType.StrikeFrame)
+            || (i.frameNo == (frame.frameNo + 1) && i.frameType == Enum.FrameType.LastFrame && i.frameScore.firstPinScore == 10 )).FirstOrDefault();
+
+            //last frame && second strike
+            IFrame nextFrameLast = lstFrame.Where(i => i.frameNo == (frame.frameNo ) && i.frameType == Enum.FrameType.LastFrame && (i.frameScore.firstPinScore == 10|| i.frameScore.secondPinScore == 10)).FirstOrDefault();
+
             if (nextFrameStrike != null)
             {
-                IStrikeFrame nextStrikeFrame = ConvertToStrike(nextFrameStrike);
-                bonus = nextStrikeFrame.frameScore.firstPinScore;
+                bonus = nextFrameStrike.frameScore.firstPinScore;
                 if (start < limit)
                 {
-                    bonus += GetBonus(nextStrikeFrame, lstFrame, start: nextStrikeFrame.frameNo+1, limit: limit);
+                    bonus += GetBonus(nextFrameStrike, lstFrame, start: nextFrameStrike.frameNo + 1, limit: limit);
                 }
             }
-            else
+			else if (nextFrameLast != null)
+			{
+				bonus = nextFrameLast.frameScore.secondPinScore;
+			}
+			else
             {
-                IFrame nextFrameSpear = lstFrame.Where(i => i.frameNo == (strikeFrame.frameNo + 1)).FirstOrDefault();
+                IFrame nextFrameSpear = lstFrame.Where(i => i.frameNo == (frame.frameNo + 1)).FirstOrDefault();
                 bonus = nextFrameSpear.frameScore.firstPinScore + nextFrameSpear.frameScore.secondPinScore;
 
             }
@@ -39,9 +44,8 @@ namespace BowlingBall.Frame
         }
         public override int GetFrameScore(IFrame currentFrame, List<IFrame> lstFrame)
         {
-            IStrikeFrame strikeFrame= ConvertToStrike(currentFrame);
-            int bonus = GetBonus(strikeFrame,lstFrame, start:strikeFrame.frameNo+1, limit:strikeFrame.frameNo+2);
-            int sum = strikeFrame.frameScore.firstPinScore+ bonus;
+            int bonus = GetBonus(currentFrame, lstFrame, start: currentFrame.frameNo+1, limit: currentFrame.frameNo+2);
+            int sum = currentFrame.frameScore.firstPinScore+ bonus;
             return sum;
         }
     }

@@ -6,21 +6,7 @@ namespace BowlingBall.Tests
     [TestClass]
     public class GameFixture
     {
-        //[TestMethod]
-        //public void Gutter_game_score_should_be_zero_test()
-        //{
-        //    var game = new Game();
-        //    Roll(game, 0, 20);
-        //    Assert.AreEqual(0, game.GetScore());
-        //}
-
-        //private void Roll(Game game, int pins, int times)
-        //{
-        //    for (int i = 0; i < times; i++)
-        //    {
-        //        game.Roll(pins);
-        //    }
-        //}
+       
         [TestMethod]
         public void Game_score_should_be_One_Gutter_test()
         {
@@ -64,6 +50,27 @@ namespace BowlingBall.Tests
             IGame game = new Game();
             int transformed = game.Run(rolls);
             int expected = 187;
+            Assert.AreEqual(expected, transformed);
+        }
+
+        [TestMethod]
+        public void Game_score_All_Strike_test()
+        {
+            int[,] rolls = new int[10, 3] {
+               {10,0,0 },
+               {10,0,0 },
+                {10,0 ,0},
+                {10,0,0 },
+                {10,0 ,0},
+                {10,0,0 },
+                {10,0 ,0},
+                {10,0 ,0},
+                {10,0 ,0},
+                {10,10,10 }
+            };
+            IGame game = new Game();
+            int transformed = game.Run(rolls);
+            int expected = 300;
             Assert.AreEqual(expected, transformed);
         }
     }
