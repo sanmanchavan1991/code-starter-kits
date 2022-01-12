@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BowlingBall</RootNamespace>
     <AssemblyName>BowlingBall</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,7 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculation\IScore.cs" />
+    <Compile Include="Calculation\Score.cs" />
+    <Compile Include="Enum\FrameType.cs" />
+    <Compile Include="Extension\ArrayExtension.cs" />
+    <Compile Include="FrameFactory.cs" />
+    <Compile Include="Frame\ILastFrame.cs" />
+    <Compile Include="Frame\IStrikeFrame.cs" />
+    <Compile Include="Frame\LastFrame.cs" />
+    <Compile Include="Frame\Frame.cs" />
+    <Compile Include="Frame\IFrame.cs" />
+    <Compile Include="Frame\SpareFrame.cs" />
+    <Compile Include="Frame\StrikeFrame.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IGame.cs" />
+    <Compile Include="Pin\FrameScore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
